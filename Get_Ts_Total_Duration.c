@@ -1,6 +1,6 @@
-/*��ȡTS�ļ���Ƶ����
- *��ƪ�󲿷ֻ��ǿ۵�live555�Ĵ��롣live555�������м���ts��clock��ֵ�ģ�����clock����rtp�ķ����������clock�ռ������������һ��clock��ȥ��
- *һ��clock���ܵõ�TS�ļ��Ĵ�ų��ȡ� ��С����ǰ������Ƶ�ļ�������TS�ļ�����һ���ֽ���0x47��ÿ��TS����С188���������δ���ǡ�
+/*获取TS文件视频长度
+ *本篇大部分还是扣的live555的代码。live555代码中有计算ts的clock的值的，根据clock决定rtp的发包间隔。将clock收集起来，从最后一个clock减去第
+ *一个clock就能得到TS文件的大概长度。 本小程序前提是视频文件必须是TS文件，第一个字节是0x47，每个TS包大小188，其余情况未考虑。
  */
 
 #include <stdio.h>
@@ -11,7 +11,7 @@ typedef struct {
 	double clock_begin;
 	double clock_end;
 }pid_t;
-pid_t pid_array[8191];
+pid_t pid_array[8191]; //一个ts最多有8191个pid。那就建立一个8191的数组
 unsigned char buf[TS_PACKET_SIZE];
 void get_length(unsigned char *pkt);
 void store_pid(unsigned pid, double clock);
